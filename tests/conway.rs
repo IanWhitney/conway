@@ -142,13 +142,17 @@ fn oscillating_blinker() {
     c.add_cell(2, 1);
     c.add_cell(2, 2);
     c.add_cell(2, 3);
-    let period_one = "OOOOOOOOOOOOOOOOOOOO\n".to_string() + "OOXOOOOOOOOOOOOOOOOO\n" +
-                     "OOXOOOOOOOOOOOOOOOOO\n" + "OOXOOOOOOOOOOOOOOOOO\n" +
+    let period_one = "OOOOOOOOOOOOOOOOOOOO\n".to_string() +
+                     "OOXOOOOOOOOOOOOOOOOO\n" +
+                     "OOXOOOOOOOOOOOOOOOOO\n" +
+                     "OOXOOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO";
     assert_eq!(period_one, c.state());
     let c = c.tick();
-    let period_two = "OOOOOOOOOOOOOOOOOOOO\n".to_string() + "OOOOOOOOOOOOOOOOOOOO\n" +
-                     "OXXXOOOOOOOOOOOOOOOO\n" + "OOOOOOOOOOOOOOOOOOOO\n" +
+    let period_two = "OOOOOOOOOOOOOOOOOOOO\n".to_string() +
+                     "OOOOOOOOOOOOOOOOOOOO\n" +
+                     "OXXXOOOOOOOOOOOOOOOO\n" +
+                     "OOOOOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO";
     assert_eq!(period_two, c.state());
     let c = c.tick();
