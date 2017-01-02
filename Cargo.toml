@@ -1,0 +1,6 @@
+[package]
+name = "conway"
+version = "0.1.0"
+authors = ["Ian Whitney <whit0694@umn.edu>"]
+
+[dependencies]
