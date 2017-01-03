@@ -1,18 +1,28 @@
 pub struct Conway {
-    rows: Vec<Vec<char>>,
+    rows: Vec<Vec<Cell>>,
 }
 
 impl Conway {
     pub fn new(row_count: usize) -> Self {
-        Conway { rows: vec![vec!['O'; 20]; row_count] }
+        let mut rows: Vec<Vec<Cell>> = Vec::new();
+
+        for _ in 0..row_count {
+            let mut row: Vec<Cell> = Vec::new();
+            for _ in 0..20 {
+                row.push(Cell::dead());
+            }
+            rows.push(row)
+        }
+
+        Conway { rows: rows }
     }
 
     pub fn state(&self) -> String {
         let mut r = String::from("");
 
         for row in self.rows.iter() {
-            for c in row.iter().cloned() {
-                r.push(c);
+            for c in row.iter() {
+                r.push(c.state());
             }
             r.push('\n');
         }
@@ -21,7 +31,7 @@ impl Conway {
     }
 
     pub fn add_living(&mut self, l: &Location) {
-        self.rows[l.y][l.x] = 'X'
+        self.rows[l.y][l.x] = Cell::alive()
     }
 
     pub fn tick(&self) -> Conway {
@@ -30,7 +40,7 @@ impl Conway {
         for (y_index, row) in self.rows.iter().enumerate() {
             for (x_index, cell) in row.iter().enumerate() {
                 let location = Location::new(x_index, y_index);
-                let living_cell = *cell == 'X';
+                let living_cell = cell.living;
                 let living_neighbors = self.living_neighbor_count(&location);
 
                 if living_cell && (living_neighbors == 2 || living_neighbors == 3) {
@@ -59,15 +69,15 @@ impl Conway {
         let mut count = 0;
 
         for y_index in low_y..high_y {
-            if x >= 1 && self.rows[y_index][x - 1] == 'X' {
+            if x >= 1 && self.rows[y_index][x - 1].living {
                 count += 1;
             }
 
-            if x <= 18 && self.rows[y_index][x + 1] == 'X' {
+            if x <= 18 && self.rows[y_index][x + 1].living {
                 count += 1;
             }
 
-            if y_index != y && self.rows[y_index][x] == 'X' {
+            if y_index != y && self.rows[y_index][x].living {
                 count += 1;
             }
 
@@ -84,5 +94,23 @@ pub struct Location {
 impl Location {
     pub fn new(x: usize, y: usize) -> Self {
         Location { x: x, y: y }
+    }
+}
+
+struct Cell {
+    living: bool,
+}
+
+impl Cell {
+    pub fn dead() -> Self {
+        Cell { living: false }
+    }
+
+    pub fn alive() -> Self {
+        Cell { living: true }
+    }
+
+    pub fn state(&self) -> char {
+        if self.living { 'X' } else { 'O' }
     }
 }
