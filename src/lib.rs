@@ -160,15 +160,9 @@ impl World {
     }
 
     fn neighbors_of(&self, location: &Location) -> Vec<&Cell> {
-        let neighbors = location.neighbors();
-
-        let mut cells = Vec::new();
-
-        for neighbor in neighbors {
-            if let Some(cell) = self.cell_at(&neighbor) {
-                cells.push(cell)
-            }
-        }
-        cells
+        location.neighbors()
+            .iter()
+            .filter_map(|neighbor| self.cell_at(neighbor))
+            .collect::<Vec<&Cell>>()
     }
 }
