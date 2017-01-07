@@ -165,10 +165,8 @@ impl World {
         let mut cells = Vec::new();
 
         for neighbor in neighbors {
-            if let Some(_) = self.state.get(neighbor.y) {
-                if let Some(cell) = self.state[neighbor.y].get(neighbor.x) {
-                    cells.push(cell);
-                }
+            if let Some(cell) = self.cell_at(&neighbor) {
+                cells.push(cell)
             }
         }
         cells
