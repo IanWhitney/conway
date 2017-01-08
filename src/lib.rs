@@ -19,7 +19,7 @@ impl Conway {
             }
 
             if let Some(cell) = self.world.cell_at(&location) {
-                r.push(cell.state());
+                r.push(cell.to_char());
             }
         }
         r
@@ -91,7 +91,7 @@ impl Cell {
         Cell { living: true }
     }
 
-    pub fn state(&self) -> char {
+    pub fn to_char(&self) -> char {
         if self.living { 'X' } else { 'O' }
     }
 
