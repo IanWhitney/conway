@@ -4,7 +4,7 @@ pub struct Conway {
 
 impl Conway {
     pub fn new(row_count: usize) -> Self {
-        Conway { world: World::new(&20, &row_count) }
+        Conway { world: World::new(20, row_count) }
     }
 
     pub fn to_string(&self) -> String {
@@ -121,13 +121,13 @@ struct World {
 }
 
 impl World {
-    fn new(width: &usize, height: &usize) -> Self {
+    fn new(width: usize, height: usize) -> Self {
         let mut rows: Vec<Vec<Cell>> = Vec::new();
         let mut locations: Vec<Location> = Vec::new();
 
-        for y_index in 0..height + 0 {
+        for y_index in 0..height {
             let mut row: Vec<Cell> = Vec::new();
-            for x_index in 0..width + 0 {
+            for x_index in 0..width {
                 row.push(Cell::dead());
                 locations.push(Location::new(x_index, y_index));
             }
