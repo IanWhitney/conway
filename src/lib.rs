@@ -122,13 +122,10 @@ struct World {
 
 impl World {
     fn new(width: usize, height: usize) -> Self {
-        let state: Vec<Vec<Cell>> = vec![vec![Cell::dead(); width]; height];
-        let locations: Vec<Location> = Vec::with_capacity(height * width);
-
         let mut w = World {
             height: height.clone(),
-            state: state,
-            locations: locations,
+            state: vec![vec![Cell::dead(); width]; height],
+            locations: Vec::with_capacity(height * width),
         };
 
         for y_index in 0..height {
