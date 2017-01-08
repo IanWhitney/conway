@@ -4,9 +4,7 @@ pub struct Conway {
 
 impl Conway {
     pub fn new(row_count: usize) -> Self {
-        let world = World::new(&20, &row_count);
-
-        Conway { world: world }
+        Conway { world: World::new(&20, &row_count) }
     }
 
     pub fn state(&self) -> String {
