@@ -13,7 +13,7 @@ use conway::*;
 fn new_is_empty() {
     let c = Conway::new(1);
     let expected = "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -21,7 +21,7 @@ fn adding_a_cell() {
     let mut c = Conway::new(1);
     c.add_living(&Location::new(0, 0));
     let expected = "XOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -29,7 +29,7 @@ fn empty_worlds_stay_empty() {
     let c = Conway::new(1);
     let c = c.tick();
     let expected = "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -37,10 +37,10 @@ fn cell_with_no_neigbors_dies() {
     let mut c = Conway::new(1);
     c.add_living(&Location::new(2, 0));
     let expected = "OOXOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
     let c = c.tick();
     let expected = "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -49,10 +49,10 @@ fn cell_with_one_neighbor_dies() {
     c.add_living(&Location::new(2, 0));
     c.add_living(&Location::new(3, 0));
     let expected = "OOXXOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
     let c = c.tick();
     let expected = "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 
@@ -63,17 +63,17 @@ fn cell_with_two_neighbors_lives() {
     c.add_living(&Location::new(3, 0));
     c.add_living(&Location::new(4, 0));
     let expected = "OOXXXOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
     let c = c.tick();
     let expected = "OOOXOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
 fn conway_can_be_created_with_more_than_one_row() {
     let c = Conway::new(2);
     let expected = "OOOOOOOOOOOOOOOOOOOO\n".to_string() + "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -88,9 +88,9 @@ fn stable_block() {
                    "OOXXOOOOOOOOOOOOOOOO\n" +
                    "OOXXOOOOOOOOOOOOOOOO\n" +
                    "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
     let c = c.tick();
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -108,9 +108,9 @@ fn stable_beehive() {
                    "OXOOXOOOOOOOOOOOOOOO\n" +
                    "OOXXOOOOOOOOOOOOOOOO\n" +
                    "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
     let c = c.tick();
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -130,9 +130,9 @@ fn stable_loaf() {
                    "OOXOXOOOOOOOOOOOOOOO\n" +
                    "OOOXOOOOOOOOOOOOOOOO\n" +
                    "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
     let c = c.tick();
-    assert_eq!(expected, c.state());
+    assert_eq!(expected, c.to_string());
 }
 
 #[test]
@@ -147,16 +147,16 @@ fn oscillating_blinker() {
                      "OOXOOOOOOOOOOOOOOOOO\n" +
                      "OOXOOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(period_one, c.state());
+    assert_eq!(period_one, c.to_string());
     let c = c.tick();
     let period_two = "OOOOOOOOOOOOOOOOOOOO\n".to_string() +
                      "OOOOOOOOOOOOOOOOOOOO\n" +
                      "OXXXOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(period_two, c.state());
+    assert_eq!(period_two, c.to_string());
     let c = c.tick();
-    assert_eq!(period_one, c.state());
+    assert_eq!(period_one, c.to_string());
 }
 
 #[test]
@@ -175,7 +175,7 @@ fn oscillating_toad() {
                      "OXXXOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO";
-    assert_eq!(period_one, c.state());
+    assert_eq!(period_one, c.to_string());
     let period_two = "OOOOOOOOOOOOOOOOOOOO\n".to_string() +
                      "OOOXOOOOOOOOOOOOOOOO\n" +
                      "OXOOXOOOOOOOOOOOOOOO\n" +
@@ -183,7 +183,7 @@ fn oscillating_toad() {
                      "OOXOOOOOOOOOOOOOOOOO\n" +
                      "OOOOOOOOOOOOOOOOOOOO";
     let c = c.tick();
-    assert_eq!(period_two, c.state());
+    assert_eq!(period_two, c.to_string());
     let c = c.tick();
-    assert_eq!(period_one, c.state());
+    assert_eq!(period_one, c.to_string());
 }

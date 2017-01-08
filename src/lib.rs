@@ -7,7 +7,7 @@ impl Conway {
         Conway { world: World::new(&20, &row_count) }
     }
 
-    pub fn state(&self) -> String {
+    pub fn to_string(&self) -> String {
         let mut r = String::from("");
 
         let mut row = 0;
