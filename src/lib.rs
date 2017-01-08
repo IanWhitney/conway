@@ -34,29 +34,11 @@ impl Conway {
 
         for location in self.world.locations.iter() {
             if let Some(cell) = self.world.cell_at(&location) {
-                let living_cell = cell.living;
-                let living_neighbors = self.living_neighbor_count(&location);
-
-                if living_cell && (living_neighbors == 2 || living_neighbors == 3) {
-                    new_conway.add_living(&location);
-                }
-
-                if !living_cell && living_neighbors == 3 {
-                    new_conway.add_living(&location);
-                }
+                new_conway.add(cell.tick(self.world.neighbors_of(location)), &location);
             }
         }
 
         new_conway
-    }
-
-    fn living_neighbor_count(&self, location: &Location) -> usize {
-        self.world
-            .neighbors_of(location)
-            .into_iter()
-            .filter(|&c| c.living)
-            .collect::<Vec<&Cell>>()
-            .len()
     }
 }
 
@@ -111,6 +93,24 @@ impl Cell {
 
     pub fn state(&self) -> char {
         if self.living { 'X' } else { 'O' }
+    }
+
+    pub fn tick(&self, neighbors: Vec<&Cell>) -> Cell {
+        let living_cell = self.living;
+        let living_neighbors = neighbors.into_iter()
+            .filter(|&c| c.living)
+            .collect::<Vec<&Cell>>()
+            .len();
+
+        if living_cell && (living_neighbors == 2 || living_neighbors == 3) {
+            return Cell::alive();
+        }
+
+        if !living_cell && living_neighbors == 3 {
+            return Cell::alive();
+        }
+
+        Cell::dead()
     }
 }
 
