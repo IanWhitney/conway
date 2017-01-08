@@ -25,8 +25,8 @@ impl Conway {
         r
     }
 
-    pub fn add_living(&mut self, l: &Location) {
-        self.world.add_cell(Cell::alive(), l);
+    pub fn add(&mut self, c: Cell, l: &Location) {
+        self.world.add_cell(c, l);
     }
 
     pub fn tick(&self) -> Conway {
@@ -96,7 +96,7 @@ impl Location {
 }
 
 #[derive(Debug, Clone)]
-struct Cell {
+pub struct Cell {
     living: bool,
 }
 
