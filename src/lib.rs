@@ -26,7 +26,7 @@ impl Conway {
     }
 
     pub fn add_living(&mut self, l: &Location) {
-        self.world.add(Cell::alive(), l);
+        self.world.add_cell(Cell::alive(), l);
     }
 
     pub fn tick(&self) -> Conway {
@@ -95,7 +95,7 @@ impl Location {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Cell {
     living: bool,
 }
@@ -122,27 +122,32 @@ struct World {
 
 impl World {
     fn new(width: usize, height: usize) -> Self {
-        let mut rows: Vec<Vec<Cell>> = Vec::new();
-        let mut locations: Vec<Location> = Vec::new();
+        let state: Vec<Vec<Cell>> = vec![vec![Cell::dead(); width]; height];
+        let locations: Vec<Location> = Vec::with_capacity(height * width);
+
+        let mut w = World {
+            height: height.clone(),
+            state: state,
+            locations: locations,
+        };
 
         for y_index in 0..height {
-            let mut row: Vec<Cell> = Vec::new();
             for x_index in 0..width {
-                row.push(Cell::dead());
-                locations.push(Location::new(x_index, y_index));
+                let l = Location::new(x_index, y_index);
+                w.add_cell(Cell::dead(), &l);
+                w.add_location(l);
             }
-            rows.push(row);
         }
 
-        World {
-            height: height.clone(),
-            state: rows,
-            locations: locations,
-        }
+        w
     }
 
-    fn add(&mut self, cell: Cell, location: &Location) {
+    fn add_cell(&mut self, cell: Cell, location: &Location) {
         self.state[location.y][location.x] = cell;
+    }
+
+    fn add_location(&mut self, location: Location) {
+        self.locations.push(location)
     }
 
     fn cell_at(&self, location: &Location) -> Option<&Cell> {
