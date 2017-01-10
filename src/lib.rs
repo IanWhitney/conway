@@ -12,21 +12,21 @@ impl Conway {
 
         let mut row = 0;
 
-        for location in self.world.locations.iter() {
-            if location.y != row {
+        for lc in self.world.lc.iter() {
+            println!("{:?}", lc.0);
+            println!("{:?}", lc.1);
+            if lc.0.y != row {
                 row += 1;
                 r.push('\n');
             }
-
-            if let Some(cell) = self.world.cell_at(&location) {
-                r.push(cell.to_char());
-            }
+            r.push(lc.1.to_char());
         }
         r
     }
 
     pub fn add(&mut self, c: Cell, l: &Location) {
-        self.world.add_cell(c, l);
+        // self.world.add_cell(c.clone(), l);
+        self.world.add_lc(Location::new(l.x, l.y), c);
     }
 
     pub fn tick(&self) -> Conway {
@@ -118,6 +118,7 @@ struct World {
     height: usize,
     state: Vec<Vec<Cell>>,
     locations: Vec<Location>,
+    lc: Vec<(Location, Cell)>,
 }
 
 impl World {
@@ -126,25 +127,30 @@ impl World {
             height: height.clone(),
             state: vec![vec![Cell::dead(); width]; height],
             locations: Vec::with_capacity(height * width),
+            lc: Vec::new(),
         };
 
-        for y_index in 0..height {
-            for x_index in 0..width {
-                let l = Location::new(x_index, y_index);
-                w.add_cell(Cell::dead(), &l);
-                w.add_location(l);
-            }
-        }
+        // for y_index in 0..height {
+        //     for x_index in 0..width {
+        //         let l = Location::new(x_index, y_index);
+        //         w.add_cell(Cell::dead(), &l);
+        //         w.add_location(l);
+        //     }
+        // }
 
         w
     }
 
-    fn add_cell(&mut self, cell: Cell, location: &Location) {
-        self.state[location.y][location.x] = cell;
-    }
+    // fn add_cell(&mut self, cell: Cell, location: &Location) {
+    //     self.state[location.y][location.x] = cell.clone();
+    // }
 
-    fn add_location(&mut self, location: Location) {
-        self.locations.push(location)
+    // fn add_location(&mut self, location: Location) {
+    //     self.locations.push(location)
+    // }
+    //
+    fn add_lc(&mut self, location: Location, cell: Cell) {
+        self.lc.push((location, cell))
     }
 
     fn cell_at(&self, location: &Location) -> Option<&Cell> {
